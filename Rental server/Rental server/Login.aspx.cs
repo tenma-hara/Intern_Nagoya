@@ -25,7 +25,6 @@ namespace Rental_server
 
         }
 
-
         protected void TextBox2_TextChanged(object sender, EventArgs e)
         {
 
@@ -36,7 +35,10 @@ namespace Rental_server
             //サーバ情報格納
             try
             {
-                string sConnectlonStrlng ="Addr = localhost;"
+                //サーバー側のIPアドレス
+                   //string sConnectlonStrlng ="Addr = 192.168.10.201;"
+                   //PC側のIPアドレス
+                   string sConnectlonStrlng = "Addr = localhost;"
                     + "User Id = sa;"
                     + "password = P@ssw0rd;"
                     + "Initial Catalog = DVDRentalDB;"
@@ -59,7 +61,7 @@ namespace Rental_server
                 //ＩＤまたはパスワードが未入力だった場合
                 if (UserID.Text.CompareTo("") == 0 || Pass.Text.CompareTo("") == 0)
                 {
-                    //IDが未入力だった未入力だったら
+                    //IDが未入力だったら
                     if (UserID.Text.CompareTo("") == 0)
                     {
                         UserIDMi.ForeColor = Color.Red;
@@ -158,6 +160,9 @@ namespace Rental_server
             return Id;
         }
 
-
+        protected void SearchDVD_Click(object sender, EventArgs e)
+        {
+            Server.Transfer("DVDSearch.aspx");
+        }
     }
 }

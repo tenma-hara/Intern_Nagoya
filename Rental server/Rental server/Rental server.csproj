@@ -67,13 +67,26 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Conf_Rental.aspx" />
     <Content Include="Conf_Return.aspx" />
     <Content Include="DVDReturn.aspx" />
+    <Content Include="DVDSearch.aspx" />
+    <Content Include="EnterScript.js" />
     <Content Include="Login.aspx" />
+    <Content Include="Member search.aspx" />
+    <Content Include="Registration.aspx" />
     <Content Include="rental.aspx" />
+    <Content Include="teso.aspx" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Conf_Rental.aspx.cs">
+      <DependentUpon>Conf_Rental.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Conf_Rental.aspx.designer.cs">
+      <DependentUpon>Conf_Rental.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Conf_Return.aspx.cs">
       <DependentUpon>Conf_Return.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -88,6 +101,13 @@
     <Compile Include="DVDReturn.aspx.designer.cs">
       <DependentUpon>DVDReturn.aspx</DependentUpon>
     </Compile>
+    <Compile Include="DVDSearch.aspx.cs">
+      <DependentUpon>DVDSearch.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="DVDSearch.aspx.designer.cs">
+      <DependentUpon>DVDSearch.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Login.aspx.cs">
       <DependentUpon>Login.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -95,13 +115,34 @@
     <Compile Include="Login.aspx.designer.cs">
       <DependentUpon>Login.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Member search.aspx.cs">
+      <DependentUpon>Member search.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Member search.aspx.designer.cs">
+      <DependentUpon>Member search.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Registration.aspx.cs">
+      <DependentUpon>Registration.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Registration.aspx.designer.cs">
+      <DependentUpon>Registration.aspx</DependentUpon>
+    </Compile>
     <Compile Include="rental.aspx.cs">
       <DependentUpon>rental.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="rental.aspx.designer.cs">
       <DependentUpon>rental.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="teso.aspx.cs">
+      <DependentUpon>teso.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="teso.aspx.designer.cs">
+      <DependentUpon>teso.aspx</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>

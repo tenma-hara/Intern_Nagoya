@@ -10,7 +10,7 @@
 namespace Rental_server {
     
     
-    public partial class DVDReturn {
+    public partial class Registration {
         
         /// <summary>
         /// form1 コントロール。
@@ -22,112 +22,139 @@ namespace Rental_server {
         protected global::System.Web.UI.HtmlControls.HtmlForm form1;
         
         /// <summary>
-        /// Button_LogOut コントロール。
+        /// NameLabel コントロール。
         /// </summary>
         /// <remarks>
         /// 自動生成されたフィールド。
         /// 変更するには、フィールドの宣言をデザイナー ファイルから分離コード ファイルに移動します。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button Button_LogOut;
+        protected global::System.Web.UI.WebControls.Label NameLabel;
         
         /// <summary>
-        /// Label_Title コントロール。
+        /// NameText コントロール。
         /// </summary>
         /// <remarks>
         /// 自動生成されたフィールド。
         /// 変更するには、フィールドの宣言をデザイナー ファイルから分離コード ファイルに移動します。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label Label_Title;
+        protected global::System.Web.UI.WebControls.TextBox NameText;
         
         /// <summary>
-        /// Label_User コントロール。
+        /// ErrorNameLabel コントロール。
         /// </summary>
         /// <remarks>
         /// 自動生成されたフィールド。
         /// 変更するには、フィールドの宣言をデザイナー ファイルから分離コード ファイルに移動します。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label Label_User;
+        protected global::System.Web.UI.WebControls.Label ErrorNameLabel;
         
         /// <summary>
-        /// Label_MemberID コントロール。
+        /// ZipCodeLabel コントロール。
         /// </summary>
         /// <remarks>
         /// 自動生成されたフィールド。
         /// 変更するには、フィールドの宣言をデザイナー ファイルから分離コード ファイルに移動します。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label Label_MemberID;
+        protected global::System.Web.UI.WebControls.Label ZipCodeLabel;
         
         /// <summary>
-        /// TBox_MemberID コントロール。
+        /// ZipText コントロール。
         /// </summary>
         /// <remarks>
         /// 自動生成されたフィールド。
         /// 変更するには、フィールドの宣言をデザイナー ファイルから分離コード ファイルに移動します。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TBox_MemberID;
+        protected global::System.Web.UI.WebControls.TextBox ZipText;
         
         /// <summary>
-        /// Button_ShowItem コントロール。
+        /// ErrorZipLabel コントロール。
         /// </summary>
         /// <remarks>
         /// 自動生成されたフィールド。
         /// 変更するには、フィールドの宣言をデザイナー ファイルから分離コード ファイルに移動します。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button Button_ShowItem;
+        protected global::System.Web.UI.WebControls.Label ErrorZipLabel;
         
         /// <summary>
-        /// Label_Error コントロール。
+        /// StreetAdLabel コントロール。
         /// </summary>
         /// <remarks>
         /// 自動生成されたフィールド。
         /// 変更するには、フィールドの宣言をデザイナー ファイルから分離コード ファイルに移動します。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label Label_Error;
+        protected global::System.Web.UI.WebControls.Label StreetAdLabel;
         
         /// <summary>
-        /// Label_ShowItem コントロール。
+        /// StreetAdText コントロール。
         /// </summary>
         /// <remarks>
         /// 自動生成されたフィールド。
         /// 変更するには、フィールドの宣言をデザイナー ファイルから分離コード ファイルに移動します。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label Label_ShowItem;
+        protected global::System.Web.UI.WebControls.TextBox StreetAdText;
         
         /// <summary>
-        /// CBoxList_ShowItem コントロール。
+        /// ErrorStrAdLabel コントロール。
         /// </summary>
         /// <remarks>
         /// 自動生成されたフィールド。
         /// 変更するには、フィールドの宣言をデザイナー ファイルから分離コード ファイルに移動します。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBoxList CBoxList_ShowItem;
+        protected global::System.Web.UI.WebControls.Label ErrorStrAdLabel;
         
         /// <summary>
-        /// CBoxList_RentalID コントロール。
+        /// TELLabel コントロール。
         /// </summary>
         /// <remarks>
         /// 自動生成されたフィールド。
         /// 変更するには、フィールドの宣言をデザイナー ファイルから分離コード ファイルに移動します。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBoxList CBoxList_RentalID;
+        protected global::System.Web.UI.WebControls.Label TELLabel;
         
         /// <summary>
-        /// Button_Return コントロール。
+        /// TELText コントロール。
         /// </summary>
         /// <remarks>
         /// 自動生成されたフィールド。
         /// 変更するには、フィールドの宣言をデザイナー ファイルから分離コード ファイルに移動します。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button Button_Return;
+        protected global::System.Web.UI.WebControls.TextBox TELText;
         
         /// <summary>
-        /// Label_NoCheck コントロール。
+        /// ErrorTELLabel コントロール。
         /// </summary>
         /// <remarks>
         /// 自動生成されたフィールド。
         /// 変更するには、フィールドの宣言をデザイナー ファイルから分離コード ファイルに移動します。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label Label_NoCheck;
+        protected global::System.Web.UI.WebControls.Label ErrorTELLabel;
+        
+        /// <summary>
+        /// ErrorNumLabel コントロール。
+        /// </summary>
+        /// <remarks>
+        /// 自動生成されたフィールド。
+        /// 変更するには、フィールドの宣言をデザイナー ファイルから分離コード ファイルに移動します。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label ErrorNumLabel;
+        
+        /// <summary>
+        /// CancelButton コントロール。
+        /// </summary>
+        /// <remarks>
+        /// 自動生成されたフィールド。
+        /// 変更するには、フィールドの宣言をデザイナー ファイルから分離コード ファイルに移動します。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button CancelButton;
+        
+        /// <summary>
+        /// DecButton コントロール。
+        /// </summary>
+        /// <remarks>
+        /// 自動生成されたフィールド。
+        /// 変更するには、フィールドの宣言をデザイナー ファイルから分離コード ファイルに移動します。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button DecButton;
         
         /// <summary>
         /// ShopName1 コントロール。

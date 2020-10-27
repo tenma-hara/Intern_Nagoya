@@ -11,7 +11,7 @@ namespace Rental_server
     public partial class Conf_Rental : System.Web.UI.Page
     {
 
-            string sConnectionString = "Addr = 192.168.10.143;"
+            string sConnectionString = "Addr = localhost;"
          + "User Id = sa;"
          + "password = P@ssw0rd;"
          + "Initial Catalog = DVDRentalDB;"
@@ -79,174 +79,191 @@ namespace Rental_server
             List<int> FailureIDList = new List<int>();          //レンタル失敗したリスト
             //DVDIDの取得
             List<string> DVDID = (List<string>)Session["Conf_Rent_DVDId"];
-
-            //データベース参照
-            SqlConnection sqlConnection = new SqlConnection(sConnectionString);
-            sqlConnection.Open();
-
-            //DVDIDが同じものを一件ずつ探す
-            for(int i=0;i<DVDID.Count();i++)
-            {
-                string Searchsql                                                   //DVDID
-                         = "SELECT [Quantity] FROM [dbo].[Stock]  WHERE [Id] = " + DVDID[i];
-
-                SqlCommand RentalCommand = sqlConnection.CreateCommand();
-                RentalCommand.CommandText = Searchsql;
-
-                SqlDataReader RentalDataReader = RentalCommand.ExecuteReader();
-                RentalCommand.Dispose();
-
-                string strNum = "-1";      //在庫数
-
-                while (RentalDataReader.Read())
-                {
-                    strNum = RentalDataReader["Quantity"].ToString();
-                }
-                RentalDataReader.Close();
-
-
-                if (int.Parse(strNum) <= 0)    //探していたDVDの在庫が無かったら
-                {
-                    FailureIDList.Add(i);         //失敗したリストに追加
-                }
-            }
-
-            //失敗リストにDVDIDが入っていたら(在庫がないものがあったら)
-            if(FailureIDList.Count() != 0)
-            {
-                bSituation = false;     //在庫フラグをおろす
-            }
-
-            if (bSituation)                            //在庫あり
+            try
             {
 
-                //--- レンタル操作 ---
 
-                //最終行の検索
-                string Searchsql                                               
-                        = "Select  count(Id) as count from [dbo].[Rental] ";
+                    //データベース参照
+                    SqlConnection sqlConnection = new SqlConnection(sConnectionString);
+                sqlConnection.Open();
 
-                SqlCommand SearchCommand = sqlConnection.CreateCommand();
-                SearchCommand.CommandText = Searchsql;
-
-                SqlDataReader SearchDataReader = SearchCommand.ExecuteReader();
-                SearchCommand.Dispose();
-
-                int nLast = -1;     //データベースの最終行格納用
-                
-                while(SearchDataReader.Read())
-                {
-                    nLast = int.Parse( SearchDataReader["count"].ToString());
-                }
-
-                SearchDataReader.Close();
-
-                //借りたDVDの本数だけ回す
+                //DVDIDが同じものを一件ずつ探す
                 for(int i=0;i<DVDID.Count();i++)
                 {
-                    string Updatesql
-                  = "INSERT INTO[dbo].[Rental]([Id],[MemberId],[DvdId],[IsReturned],[InsertDateTime],[InsertUserId],[UpdateDateTime],[UpdateUserId]) VALUES("
-                  + (nLast + i + 2).ToString() + ","                //ID(データベースの最終行+借りているDVDの数+2 (IDは2からスタートなので))
-                  + Session["MemberID"].ToString() + ","            //借りる客のID
-                  + DVDID[i] + ","                                  //借りるDVDID
-                  +"0" + ","                                        //返却フラグは　0
-                  +DateTime.Now.ToString().Substring(0, 10) + ","   //借り始めた時間
-                  + Session["Id"].ToString() + ","                  //対応した店員のID
-                  +"NULL" + ","                                     //更新した時間
-                  +"NULL" + ")";                                    //更新した店員のID
+                    string Searchsql                                                   //DVDID
+                             = "SELECT [Quantity] FROM [dbo].[Stock]  WHERE [Id] = " + DVDID[i];
 
                     SqlCommand RentalCommand = sqlConnection.CreateCommand();
-                    RentalCommand.CommandText = Updatesql;
+                    RentalCommand.CommandText = Searchsql;
 
                     SqlDataReader RentalDataReader = RentalCommand.ExecuteReader();
                     RentalCommand.Dispose();
 
+                    string strNum = "-1";      //在庫数
+
+                    while (RentalDataReader.Read())
+                    {
+                        strNum = RentalDataReader["Quantity"].ToString();
+                    }
                     RentalDataReader.Close();
 
-                    //在庫操作
-                    string Stocksql
-                        = "UPDATE [dbo].[Stock] SET  [Quantity] = [Quantity] - 1 WHERE [DVDId] = " + DVDID[i];
 
-                    SqlCommand StockCommand = sqlConnection.CreateCommand();
-                    StockCommand.CommandText = Stocksql;
-
-                    SqlDataReader StockDataReader = StockCommand.ExecuteReader();
-                    StockCommand.Dispose();
-
-                    StockDataReader.Close();
-
-                }
-
-            
-
-
-                //データベース終了
-                sqlConnection.Close();
-                //レンタル管理画面へ移動
-                Response.Redirect("rental.aspx");
-
-            }
-            else                 //在庫なし
-            {
-                //--- 在庫なし通知 ---
-
-                //在庫がないことを表示する
-                ErrorLabel.Text = "以下の商品の在庫がありません";
-
-                //貸出中の商品の表示
-                //リスト初期化
-                FailList.Items.Clear();
-
-                //セッションから貸し出したDVD名を取ってくる。
-                List<string> DVDName = (List<string>)Session["Conf_Rent_DVDName"];      
-
-                for (int i=0;i<FailureIDList.Count();i++)
-                {
-                    //レンタル失敗表示リストに追加
-                    FailList.Items.Add(DVDName[FailureIDList[i]]);
-
-                    //レンタルリストからIDとDVD名を消去
-                    DVDName.RemoveAt(FailureIDList[i]);
-                    DVDID.RemoveAt(FailureIDList[i]);
-                }
-
-               
-
-                //レンタルしようとしている商品が無かったら
-                if (DVDID.Count() == 0)
-                {
-                    DescriptionLabel.Text = "レンタルできる商品がありません。";
-
-                    //リスト初期化
-                    BulletedList1.Items.Clear();
-
-                    //画面遷移確認用フラグON
-                    Session["ConfRental_Flag"] = true;
-
-                    //キャンセルボタンを隠す
-                    CancelButton.Visible = false;
-                }
-                else        //一本でも借りることができるなら
-                {
-                    //ラベルに何点の商品をレンタルするかを表示する
-                    DescriptionLabel.Text = "以下の" + DVDName.Count() + "点の商品をレンタルします。";
-
-                    //DVDIDからレンタルする商品のリストを表示する
-                    //リスト初期化
-                    BulletedList1.Items.Clear();
-
-                    //リスト追加
-                    for (int i = 0; i < DVDName.Count(); i++)
+                    if (int.Parse(strNum) <= 0)    //探していたDVDの在庫が無かったら
                     {
-                        BulletedList1.Items.Add(DVDName[i]);
+                        FailureIDList.Add(i);         //失敗したリストに追加
                     }
                 }
 
-                //データベース終了
-                sqlConnection.Close();
+                //失敗リストにDVDIDが入っていたら(在庫がないものがあったら)
+                if(FailureIDList.Count() != 0)
+                {
+                    bSituation = false;     //在庫フラグをおろす
+                }
+
+                if (bSituation)                            //在庫あり
+                {
+
+                    //--- レンタル操作 ---
+
+                    //最終行の検索
+                    string Searchsql                                               
+                            = "Select  count(Id) as count from [dbo].[Rental] ";
+
+                    SqlCommand SearchCommand = sqlConnection.CreateCommand();
+                    SearchCommand.CommandText = Searchsql;
+
+                    SqlDataReader SearchDataReader = SearchCommand.ExecuteReader();
+                    SearchCommand.Dispose();
+
+                    int nLast = -1;     //データベースの最終行格納用
+                    
+                    while(SearchDataReader.Read())
+                    {
+                        nLast = int.Parse( SearchDataReader["count"].ToString());
+                    }
+
+                    SearchDataReader.Close();
+
+                    //借りたDVDの本数だけ回す
+                    for(int i=0;i<DVDID.Count();i++)
+                    {
+                        string Updatesql
+                      = " INSERT INTO[dbo].[Rental]([Id],[MemberId],[DvdId],[IsReturned],[InsertDateTime],[InsertUserId],[UpdateDateTime],[UpdateUserId]) VALUES("
+                      + (nLast + i + 2).ToString() + ","            //ID(データベースの最終行+借りているDVDの数+2 (IDは2からスタートなので))
+                      + Session["MemberID"].ToString() + ","        //借りる客のID
+                      + DVDID[i] + ","                              //借りるDVDID
+                      +"0" + ","                                    //返却フラグは　0
+                      + "GETDATE()" + ","                           //借り始めた時間
+                      + Session["Id"].ToString() + ","              //対応した店員のID
+                      +"NULL" + ","                                 //更新した時間
+                      +"NULL" + ")";                                //更新した店員のID
+
+                        SqlCommand RentalCommand = sqlConnection.CreateCommand();
+                        RentalCommand.CommandText = Updatesql;
+
+                        SqlDataReader RentalDataReader = RentalCommand.ExecuteReader();
+                        RentalCommand.Dispose();
+
+                        RentalDataReader.Close();
+
+                        //在庫操作
+                        string Stocksql
+                            = "UPDATE [dbo].[Stock] SET  [Quantity] = [Quantity] - 1"+ ",[UpdateDateTime] = "
+                            + "GETDATE()"                                            //処理した時間
+                            + ",[UpdateUserId] =" + Session["Id"].ToString()         //上書きした人
+                            +  "WHERE [DVDId] = " + DVDID[i];                        //上書きするDVDのID
+
+                        SqlCommand StockCommand = sqlConnection.CreateCommand();
+                        StockCommand.CommandText = Stocksql;
+
+                        SqlDataReader StockDataReader = StockCommand.ExecuteReader();
+                        StockCommand.Dispose();
+
+                        StockDataReader.Close();
+
+                    }
+
+                
+
+
+                    //データベース終了
+                    sqlConnection.Close();
+
+
+                    //レンタル管理画面へ移動
+                    Response.Redirect("rental.aspx");
+
+                }
+                else                 //在庫なし
+                {
+                    //--- 在庫なし通知 ---
+
+                    //在庫がないことを表示する
+                    ErrorLabel.Text = "以下の商品の在庫がありません";
+
+                    //貸出中の商品の表示
+                    //リスト初期化
+                    FailList.Items.Clear();
+
+                    //セッションから貸し出したDVD名を取ってくる。
+                    List<string> DVDName = (List<string>)Session["Conf_Rent_DVDName"];      
+
+                    for (int i=0;i<FailureIDList.Count();i++)
+                    {
+                        //レンタル失敗表示リストに追加
+                        FailList.Items.Add(DVDName[FailureIDList[i] - i]);
+
+                        //レンタルリストからIDとDVD名を消去
+                        DVDName.RemoveAt(FailureIDList[i] - i);
+                        DVDID.RemoveAt(FailureIDList[i] - i);
+                    }
+
+                   
+
+                    //レンタルしようとしている商品が無かったら
+                    if (DVDID.Count() == 0)
+                    {
+                        DescriptionLabel.Text = "レンタルできる商品がありません。";
+
+                        //リスト初期化
+                        BulletedList1.Items.Clear();
+
+                        //画面遷移確認用フラグON
+                        Session["ConfRental_Flag"] = true;
+
+                        //キャンセルボタンを隠す
+                        CancelButton.Visible = false;
+                    }
+                    else        //一本でも借りることができるなら
+                    {
+                        //ラベルに何点の商品をレンタルするかを表示する
+                        DescriptionLabel.Text = "以下の" + DVDName.Count() + "点の商品をレンタルします。";
+
+                        //DVDIDからレンタルする商品のリストを表示する
+                        //リスト初期化
+                        BulletedList1.Items.Clear();
+
+                        //リスト追加
+                        for (int i = 0; i < DVDName.Count(); i++)
+                        {
+                            BulletedList1.Items.Add(DVDName[i]);
+                        }
+                    }
+
+                    //データベース終了
+                    sqlConnection.Close();
+                }
+
             }
+            catch (Exception)
+            {
+                ErrorLabel.Text = "DBが接続されていません";
 
+                //キャンセルボタンを隠す
+                CancelButton.Visible = false;
 
+                Session["ConfRental_Flag"] = true; //再描画確認用フラグON
+            }
         }
     }
 }

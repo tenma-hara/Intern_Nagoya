@@ -10,7 +10,7 @@
 namespace Rental_server {
     
     
-    public partial class DVDReturn {
+    public partial class DVDSearch {
         
         /// <summary>
         /// form1 コントロール。
@@ -22,112 +22,85 @@ namespace Rental_server {
         protected global::System.Web.UI.HtmlControls.HtmlForm form1;
         
         /// <summary>
-        /// Button_LogOut コントロール。
+        /// HeaderName コントロール。
         /// </summary>
         /// <remarks>
         /// 自動生成されたフィールド。
         /// 変更するには、フィールドの宣言をデザイナー ファイルから分離コード ファイルに移動します。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button Button_LogOut;
+        protected global::System.Web.UI.WebControls.Label HeaderName;
         
         /// <summary>
-        /// Label_Title コントロール。
+        /// DVDName コントロール。
         /// </summary>
         /// <remarks>
         /// 自動生成されたフィールド。
         /// 変更するには、フィールドの宣言をデザイナー ファイルから分離コード ファイルに移動します。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label Label_Title;
+        protected global::System.Web.UI.WebControls.Label DVDName;
         
         /// <summary>
-        /// Label_User コントロール。
+        /// DVDNameText コントロール。
         /// </summary>
         /// <remarks>
         /// 自動生成されたフィールド。
         /// 変更するには、フィールドの宣言をデザイナー ファイルから分離コード ファイルに移動します。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label Label_User;
+        protected global::System.Web.UI.WebControls.TextBox DVDNameText;
         
         /// <summary>
-        /// Label_MemberID コントロール。
+        /// NameSearch コントロール。
         /// </summary>
         /// <remarks>
         /// 自動生成されたフィールド。
         /// 変更するには、フィールドの宣言をデザイナー ファイルから分離コード ファイルに移動します。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label Label_MemberID;
+        protected global::System.Web.UI.WebControls.Button NameSearch;
         
         /// <summary>
-        /// TBox_MemberID コントロール。
+        /// ErrMsg コントロール。
         /// </summary>
         /// <remarks>
         /// 自動生成されたフィールド。
         /// 変更するには、フィールドの宣言をデザイナー ファイルから分離コード ファイルに移動します。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TBox_MemberID;
+        protected global::System.Web.UI.WebControls.Label ErrMsg;
         
         /// <summary>
-        /// Button_ShowItem コントロール。
+        /// Result コントロール。
         /// </summary>
         /// <remarks>
         /// 自動生成されたフィールド。
         /// 変更するには、フィールドの宣言をデザイナー ファイルから分離コード ファイルに移動します。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button Button_ShowItem;
+        protected global::System.Web.UI.WebControls.Label Result;
         
         /// <summary>
-        /// Label_Error コントロール。
+        /// ResultCount コントロール。
         /// </summary>
         /// <remarks>
         /// 自動生成されたフィールド。
         /// 変更するには、フィールドの宣言をデザイナー ファイルから分離コード ファイルに移動します。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label Label_Error;
+        protected global::System.Web.UI.WebControls.Label ResultCount;
         
         /// <summary>
-        /// Label_ShowItem コントロール。
+        /// DVDListBox1 コントロール。
         /// </summary>
         /// <remarks>
         /// 自動生成されたフィールド。
         /// 変更するには、フィールドの宣言をデザイナー ファイルから分離コード ファイルに移動します。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label Label_ShowItem;
+        protected global::System.Web.UI.WebControls.ListBox DVDListBox1;
         
         /// <summary>
-        /// CBoxList_ShowItem コントロール。
+        /// Button1 コントロール。
         /// </summary>
         /// <remarks>
         /// 自動生成されたフィールド。
         /// 変更するには、フィールドの宣言をデザイナー ファイルから分離コード ファイルに移動します。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBoxList CBoxList_ShowItem;
-        
-        /// <summary>
-        /// CBoxList_RentalID コントロール。
-        /// </summary>
-        /// <remarks>
-        /// 自動生成されたフィールド。
-        /// 変更するには、フィールドの宣言をデザイナー ファイルから分離コード ファイルに移動します。
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBoxList CBoxList_RentalID;
-        
-        /// <summary>
-        /// Button_Return コントロール。
-        /// </summary>
-        /// <remarks>
-        /// 自動生成されたフィールド。
-        /// 変更するには、フィールドの宣言をデザイナー ファイルから分離コード ファイルに移動します。
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button Button_Return;
-        
-        /// <summary>
-        /// Label_NoCheck コントロール。
-        /// </summary>
-        /// <remarks>
-        /// 自動生成されたフィールド。
-        /// 変更するには、フィールドの宣言をデザイナー ファイルから分離コード ファイルに移動します。
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label Label_NoCheck;
+        protected global::System.Web.UI.WebControls.Button Button1;
         
         /// <summary>
         /// ShopName1 コントロール。

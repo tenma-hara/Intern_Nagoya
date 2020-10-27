@@ -20,26 +20,35 @@ namespace Rental_server
         List<string> SelectedDVDId;     //確認画面へ選択したDVDのIDを渡す用
         protected void Page_Load(object sender, EventArgs e)
         {
+
+            //何らかの手法でこの画面から始まった際ログイン画面に戻す
+            //ログイン時にIdを控えているのでそれがなければログインしていない状態
+            if (Session["Id"] == null)
+            {
+                Response.Redirect("Login.aspx");
+            }
+
             if (!IsPostBack)
             {   //最初に行う処理
                 //テキストボックスの初期化
                 Session["MemberID"] = "";
                 Session["nRent"] = 0;
                 mIDBox1.Text = Session["MemberID"].ToString();
+                RentButton3.Visible = false;    //選択した商品をレンタルボタンを非表示
             }
             else
             { //2回目以降
                 Session["MemberID"] = mIDBox1.Text; //初期化しなくてもよい
+                if (bflg)
+                    RentButton3.Visible = true; //レンタルボタンの表示
+                else
+                    RentButton3.Visible = false;//レンタルボタンの非表示
             }
+            CancelButton.Visible = false;   //会員を新規登録するか
+            YESButton.Visible = false;      //否かを選択するボタンを非表示
 
-            //何らかの手法でこの画面から始まった際ログイン画面に戻す
-            //ログイン時にIdを控えているのでそれがなければログインしていない状態
-            if(Session["Id"] == null)
-            {
-               Response.Redirect("Login.aspx");
-            }
             //ログインユーザーの名前を表示
-            UserName.Text = "現在のユーザー" + Session["UserID"] + "様";
+            UserName.Text = "現在のユーザー: " + Session["UserID"] ;
         }//Page_Load関数終了
 
         // ----- ログアウトボタンをクリックした際の処理
@@ -51,20 +60,28 @@ namespace Rental_server
 
         }
 
-        // ----- 会員IDを検索ボタンを押した際の処理
+        // ----- 会員の照合ボタンを押した際の処理
         protected void Button2_Click(object sender, EventArgs e)
-        { //会員IDを検索ボタン
+        { //会員の照合ボタン
             List<string> sMemIDList = new List<string>();//会員ID格納用
-            ErrMsg.Text = null;   //都度エラーメッセージは消す
+            List<string> NameList = new List<string>();//会員名格納用
+            ErrMsg.Text = "";   //都度エラーメッセージは消す
+            Label3.Text = "";   //レンタルボタンのエラーメッセージ
+            MemberName.Text = ""; //会員名のクリア
             bflg = false;
+            RentButton3.Visible = false;//レンタルボタンの非表示
+            CancelButton.Visible = false;   //ボタンの非表示
+            YESButton.Visible = false;      //ボタンの非表示
+
             //各種リストはボタンを押す度クリアする
-            CheckBoxList1.Items.Clear();
-            sMemIDList.Clear();
-            ListBox1.Items.Clear();
+            CheckBoxList1.Items.Clear();    //商品一覧
+            sMemIDList.Clear();             //会員IDリスト
+            ListBox1.Items.Clear();         //DVDIDのリスト
+
             try
             {
                 //サーバ情報格納
-                string sConnectlonStrlng = "Addr = localhost;"
+                string sConnectlonStrlng = "Addr = localhost;"   //192.168.10.201
                     + "User Id = sa;"
                     + "password = P@ssw0rd;"
                     + "Initial Catalog = DVDRentalDB;"
@@ -81,6 +98,7 @@ namespace Rental_server
                 while (sqlDataReader.Read())
                 {   //会員IDをリストへ格納
                     sMemIDList.Add(sqlDataReader["Id"].ToString());
+                    NameList.Add(sqlDataReader["Name"].ToString());
                 }
                 //この場面である条件に入らない場合以降DBを見ないので閉じる
                 sqlCommand.Dispose();
@@ -92,6 +110,7 @@ namespace Rental_server
                 ErrMsg.Text = "データベースへの接続に失敗しました";
             }
             int i = 0;  //while中に使用
+            int nId = 0;
             //int aaa = 0;  //DBから持ってきた値が正しく参照されているか確認用
 
             //会員IDが入力されているか
@@ -108,15 +127,35 @@ namespace Rental_server
                 {       //↓テキスト入力された文字が会員IDを格納したリストの中にあるか
                     if (sMemIDList.Contains(mIDBox1.Text) != true)
                     { //存在しない場合
-                        Session["MemberID"] = "";
-                        mIDBox1.Text = "";
-                        ErrMsg.Text = "※入力された会員IDは存在しません";
-                        CheckBoxList1.Items.Clear();
+                        if (!int.TryParse(mIDBox1.Text, out nId))
+                        {//数字以外が入力されていたら
+                            Session["MemberID"] = "";
+                            mIDBox1.Text = "";
+                            ErrMsg.Text = "数字以外が入力されています";
+                            CheckBoxList1.Items.Clear();
+                        }
+                        else
+                        {//数字であった場合
+                            Session["MemberID"] = mIDBox1.Text;
+                            MemberName.Text = "会員を新規登録しますか？";
+                            ErrMsg.Text = "※入力された会員IDは存在しません";
+                            CheckBoxList1.Items.Clear();
+                            CancelButton.Visible = true;    //会員を新規登録するか否か
+                            YESButton.Visible = true;       //選択するボタンを表示
+                        }
                         bflg = false;
                     }
                     else
                     {//問題なかった場合
                         ErrMsg.Text = "";
+                        //照合された会員名を表示
+                        for(int j = 0;j < sMemIDList.Count;j++)
+                        {   //会員IDリストのIDと入力された番号が合致したとき
+                            if(sMemIDList[j] == mIDBox1.Text)
+                            {   
+                                MemberName.Text = "会員名：" + NameList[j] + " 様";
+                            }
+                        }
 
                         //OKの場合会員IDをsessionに代入しておく
                         Session["MemberID"] = sMemIDList[i];
@@ -132,6 +171,7 @@ namespace Rental_server
                     //在庫が０の商品はチェックボックスをグレーアウトして
                     //チェックできないようにする
                     CreateRentalList();
+                    RentButton3.Visible = true; //選択した商品をレンタルボタンを表示
                 }
             }//elseif(true)終了
 
@@ -140,10 +180,10 @@ namespace Rental_server
         //商品一覧を表示する関数
         //DBからDVDと在庫を見て
         //在庫のないものはチェックボックスがグレーアウトされる(チェックできないようになる)
-        protected void CreateRentalList()
+        private void CreateRentalList()
         {   //商品一覧を作成する関数
             //サーバ情報格納
-            string sConnectlonStrlng = "Addr = localhost;" 
+            string sConnectlonStrlng = "Addr = localhost;"    //192.168.10.201
                 + "User Id = sa;"
                 + "password = P@ssw0rd;"
                 + "Initial Catalog = DVDRentalDB;"
@@ -161,7 +201,7 @@ namespace Rental_server
                 List<int> DVDlist = new List<int>();
                 while (sqlDataReaderDVD.Read())
                 {   //商品一覧の表示
-                    DVDlist.Add(int.Parse(sqlDataReaderDVD["Id"].ToString()));//IDリスト
+                    DVDlist.Add(int.Parse(sqlDataReaderDVD["Id"].ToString()));//DVDテーブルのIDリスト
                     ListBox1.Items.Add(sqlDataReaderDVD["ID"].ToString()); //画面上で見えないリストで管理
                     CheckBoxList1.Items.Add(sqlDataReaderDVD["Name"].ToString());
                 }
@@ -172,22 +212,39 @@ namespace Rental_server
                 sqlCommandStock.CommandText = "SELECT DVDId,Quantity FROM [dbo].[Stock]";
                 SqlDataReader sqlDataReaderStock = sqlCommandStock.ExecuteReader();
                 sqlCommandStock.Dispose();
+                var DVDId = new List<int>();    //StockテーブルのDVDId
+                var Quantity = new List<int>(); //Stoclテーブルの在庫数
 
-                int i = 0;  //whileの中で扱う用
                 while (sqlDataReaderStock.Read())
+                {//在庫情報をリストへ格納
+                    DVDId.Add(int.Parse(sqlDataReaderStock["DVDId"].ToString()));
+                    Quantity.Add(int.Parse(sqlDataReaderStock["Quantity"].ToString()));
+                }
+            sqlDataReaderStock.Close();
+
+            int i = 0;  //whileの中で扱う用
+                int j = 0;
+                while (i < DVDlist.Count)
                 {   //
-                    if (DVDlist[i] == int.Parse(sqlDataReaderStock["DVDId"].ToString()))
+                    if (DVDlist[i] == DVDId[j])
                     {
-                        if (int.Parse(sqlDataReaderStock["Quantity"].ToString()) == 0) //←
+                        if (Quantity[j] == 0) //←右辺は在庫数
                         {   //在庫なしはグレーアウト　かつ　DVD名の横にすべて貸出中の文字
                             CheckBoxList1.Items[i].Enabled = false; //チェックをグレーアウト
                             CheckBoxList1.Items[i].Text += "    *すべて貸出中*";
                         }
+                        j++;
+                    }
+                    else
+                    {   //DVDlistにあるIDがStockのDVDIdになかった場合
+                        CheckBoxList1.Items[i].Enabled = false;
+                        CheckBoxList1.Items[i].Text += "     *在庫がありません*";
+                        DVDId.Add(0);   //DVDlistとDVDIdと要素数が異なると比較ができないため
+                        Quantity.Add(0);//DBになかった場合,空のデータを追加する
                     }
                     i++;
                 }
 
-                sqlDataReaderStock.Close();
                 objConn.Close();
                 objConn.Dispose();
             }//try end
@@ -229,7 +286,7 @@ namespace Rental_server
                             SelectedDVDName.Add(CheckBoxList1.Items[i].ToString());
                         }
                     }
-                    //Server.Transfer("Conf_Rental.aspx");   //レンタル確認画面へ遷移
+                    Server.Transfer("Conf_Rental.aspx");   //レンタル確認画面へ遷移
                 }
 
             }//チェック確認のelse終了
@@ -258,5 +315,25 @@ namespace Rental_server
             return SelectedDVDName;
         }
 
+        protected void CancelButton_Click(object sender, EventArgs e)
+        {
+            CancelButton.Visible = false;
+            YESButton.Visible = false;
+            MemberName.Text = "";
+            ErrMsg.Text = "";
+            mIDBox1.Text = "";
+            Session["MemberID"] = "";
+        }
+
+        protected void YESButton_Click(object sender, EventArgs e)
+        {
+           Server.Transfer("Registration.aspx");
+        }
+
+        //--- 会員を検索ボタン
+        protected void SearchButton_Click(object sender, EventArgs e)
+        { //会員検索ページへ飛ぶ
+            Server.Transfer("Member search.aspx");
+        }
     }
 }

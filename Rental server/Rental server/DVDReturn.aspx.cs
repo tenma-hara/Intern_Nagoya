@@ -26,23 +26,28 @@ namespace Rental_server
         List<string> RentalID;
         List<string> DVDName;
 
+        //画面に表示する会員名格納用
         string MemName;
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            //何らかの手法でこの画面から始まった際ログイン画面に戻す
-            //ログイン時にIDと管理者フラグを控えているのでそれがなければログインしていない状態
-            if (Session["UserID"] == null || Session["Admin"] == null)
+            if (!IsPostBack)
             {
-                Response.Redirect("Login.aspx");
+                if (Session["Id"] == null || Session["Admin"] == null)
+                {
+                    Response.Redirect("Login.aspx");
+                }
             }
-
             
             Label_User.Text = "ログイン中のユーザー：" + Session["UserID"].ToString();
         }
    
         protected void Button_LogOut_Click(object sender, EventArgs e)
         {
+            //保持しているIDを初期化
+            Session["UserID"] = null;
+            Session["Admin"] = null;
+
             //ログイン画面へ遷移
             Response.Redirect("Login.aspx");
         }
@@ -56,6 +61,7 @@ namespace Rental_server
             RentalID = new List<string>();
             DVDName = new List<string>();
 
+            //リストの中身やテキストの中身をリセット
             InitParam();
 
             if (TBox_MemberID.Text == "")　//会員IDが入力されていない
@@ -64,78 +70,87 @@ namespace Rental_server
             }
             else
             {
-                //SQL Serverへの接続処理
-                string sConnectionString = "Addr = localhost;" +
-                                           "User Id = sa;" +
-                                           "password = P@ssw0rd;" +
-                                           "Initial Catalog = DVDRentalDB;" +
-                                           "Integrated Security = false";
-
-                SqlConnection objConn = new SqlConnection(sConnectionString);
-                objConn.Open();
-
-                SqlCommand sqlCommand = objConn.CreateCommand();
-                sqlCommand.CommandText = "SELECT Rental.MemberID , Rental.Id , DVD.Name " +
-                                         "FROM Rental " +
-                                         "INNER JOIN DVD ON DVD.id = Rental.DvdId " +
-                                         "INNER JOIN Member ON Rental.MemberId = Member.Id " +
-                                         "WHERE Rental.IsReturned = 0";
-
-                SqlDataReader DataReader = sqlCommand.ExecuteReader();
-
-                sqlCommand.Dispose();
-
-                //データがある間、データリーダーでデータを読み出す
-                while (DataReader.Read())
+                try
                 {
-                    //読み込んだデータをリストに格納
-                    RentalMemID.Add(DataReader["MemberID"].ToString());
-                    RentalID.Add(DataReader["Id"].ToString());
-                    DVDName.Add(DataReader["Name"].ToString());
+                    //SQL Serverへの接続処理
+                    string sConnectionString = "Addr = localhost;" +
+                                               "User Id = sa;" +
+                                               "password = P@ssw0rd;" +
+                                               "Initial Catalog = DVDRentalDB;" +
+                                               "Integrated Security = false";
 
-                }
+                    SqlConnection objConn = new SqlConnection(sConnectionString);
+                    objConn.Open();
 
-                //入力された会員IDが会員IDリストに含まれているか判別
-                if (CheckID(sConnectionString))
-                {
-                    for (int i = 0; i < DVDName.Count(); i++)
+                    SqlCommand sqlCommand = objConn.CreateCommand();
+                    sqlCommand.CommandText = "SELECT Rental.MemberID , Rental.Id , DVD.Name " +
+                                             "FROM Rental " +
+                                             "INNER JOIN DVD ON DVD.id = Rental.DvdId " +
+                                             "INNER JOIN Member ON Rental.MemberId = Member.Id " +
+                                             "WHERE Rental.IsReturned = 0";
+
+                    SqlDataReader DataReader = sqlCommand.ExecuteReader();
+
+                    sqlCommand.Dispose();
+
+                    //データがある間、データリーダーでデータを読み出す
+                    while (DataReader.Read())
                     {
-                        //入力したIDの会員が借りているDVDを探索する
-                        if (RentalMemID[i].ToString() == TBox_MemberID.Text)
-                        {
-                            CBoxList_RentalID.Items.Add(RentalID[i].ToString());
-                            CBoxList_ShowItem.Items.Add(DVDName[i].ToString());
-                        }                    
+                        //読み込んだデータをリストに格納
+                        RentalMemID.Add(DataReader["MemberID"].ToString());
+                        RentalID.Add(DataReader["Id"].ToString());
+                        DVDName.Add(DataReader["Name"].ToString());
+
                     }
 
-                    for(int j = 0;j < MemberName.Count;j++)
+                    //入力された会員IDが会員IDリストに含まれているか判別
+                    if (CheckID(sConnectionString))
                     {
-                        if(TBox_MemberID.Text == MemberID[j].ToString())
+                        for (int i = 0; i < DVDName.Count(); i++)
                         {
-                            MemName = MemberName[j].ToString();
+                            //入力したIDの会員が借りているDVDを探索する
+                            if (RentalMemID[i].ToString() == TBox_MemberID.Text)
+                            {
+                                CBoxList_RentalID.Items.Add(RentalID[i].ToString());
+                                CBoxList_ShowItem.Items.Add(DVDName[i].ToString());
+                            }
+                        }
+
+                        for (int j = 0; j < MemberName.Count; j++)
+                        {
+                            if (TBox_MemberID.Text == MemberID[j].ToString())
+                            {
+                                MemName = MemberName[j].ToString();
+                                break;
+                            }
+                        }
+
+                        //レンタル中のDVDがなかった場合
+                        if (CBoxList_ShowItem.Items.Count == 0)
+                        {
+                            Label_ShowItem.Text = MemName + "様 :レンタルされているDVDはありません";
+                        }
+                        else  //レンタル中のDVDがあった場合
+                        {
+                            Label_ShowItem.Text = MemName + "様 :" + CBoxList_ShowItem.Items.Count.ToString() + "件の商品がレンタルされています";
+                            Button_Return.Visible = true;
+                            
                         }
                     }
+                    else
+                    {
+                        Label_Error.Text = "存在しない会員IDです";
+                    }
 
-                    //レンタル中のDVDがなかった場合
-                    if (CBoxList_ShowItem.Items.Count == 0)
-                    {
-                        Label_ShowItem.Text = MemName + "様 :レンタルされているDVDはありません";
-                    }
-                    else  //レンタル中のDVDがあった場合
-                    {
-                        Label_ShowItem.Text = MemName + "様 :" +CBoxList_ShowItem.Items.Count.ToString() + "件の商品がレンタルされています";
-                        Button_Return.Visible = true;
-                    }
+                    //必要な処理を終えたらデータベースへの接続を終了する
+                    DataReader.Close();
+                    objConn.Close();
+                    objConn.Dispose();
                 }
-                else
+                catch
                 {
-                    Label_Error.Text = "存在しない会員IDです";
-                }
-
-                //必要な処理を終えたらデータベースへの接続を終了する
-                DataReader.Close();
-                objConn.Close();
-                objConn.Dispose();
+                    Label_Error.Text = "データベースへの接続に失敗しました";
+                }                             
             }
         }
 
