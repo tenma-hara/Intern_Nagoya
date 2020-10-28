@@ -89,13 +89,13 @@ namespace Rental_server
             //住所
             if (StreetAdText.Text.CompareTo("") == 0)
             {
-                ErrorStAdLabel.Text = "住所が入力されていません";
+                ErrorStrAdLabel.Text = "住所が入力されていません";
                 nErrorNum++;
 
             }
             else
             {
-                ErrorStAdLabel.Text = "";
+                ErrorStrAdLabel.Text = "";
             }
 
             //電話番号

@@ -97,19 +97,9 @@ namespace Rental_server
             }
         }
 
-        protected void CheckBoxList1_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
-
         protected void Button2_Click(object sender, EventArgs e)
         {
             Response.Redirect("rental.aspx");
-        }
-
-        protected void TextBox2_TextChanged(object sender, EventArgs e)
-        {
-
         }
     }
 }
