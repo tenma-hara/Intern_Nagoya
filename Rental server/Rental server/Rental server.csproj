@@ -76,6 +76,7 @@
     <Content Include="Member search.aspx" />
     <Content Include="Registration.aspx" />
     <Content Include="rental.aspx" />
+    <Content Include="SubWindow.js" />
     <Content Include="teso.aspx" />
     <Content Include="Web.config" />
   </ItemGroup>

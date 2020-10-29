@@ -11,7 +11,7 @@ namespace Rental_server
 {
     public partial class Registration : System.Web.UI.Page
     {
-        string sConnectlonStrlng = "Addr = localhost;"
+        string sConnectlonStrlng = "Addr = 192.168.10.201;"
                   + "User Id = sa;"
                   + "password = P@ssw0rd;"
                   + "Initial Catalog = DVDRentalDB;"
@@ -89,13 +89,13 @@ namespace Rental_server
             //住所
             if (StreetAdText.Text.CompareTo("") == 0)
             {
-                ErrorStrAdLabel.Text = "住所が入力されていません";
+                ErrorStAdLabel.Text = "住所が入力されていません";
                 nErrorNum++;
 
             }
             else
             {
-                ErrorStrAdLabel.Text = "";
+                ErrorStAdLabel.Text = "";
             }
 
             //電話番号

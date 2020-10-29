@@ -44,7 +44,8 @@ namespace Rental_server
    
         protected void Button_LogOut_Click(object sender, EventArgs e)
         {
-            //保持しているIDを初期化
+            //保持しているセッションを初期化
+            Session["Id"] = null;
             Session["UserID"] = null;
             Session["Admin"] = null;
 
@@ -133,8 +134,7 @@ namespace Rental_server
                         else  //レンタル中のDVDがあった場合
                         {
                             Label_ShowItem.Text = MemName + "様 :" + CBoxList_ShowItem.Items.Count.ToString() + "件の商品がレンタルされています";
-                            Button_Return.Visible = true;
-                            
+                            Button_Return.Visible = true;                            
                         }
                     }
                     else
@@ -150,7 +150,7 @@ namespace Rental_server
                 catch
                 {
                     Label_Error.Text = "データベースへの接続に失敗しました";
-                }                             
+                }
             }
         }
 

@@ -17,7 +17,7 @@ namespace Rental_server
         List<string> Id;
         protected void Page_Load(object sender, EventArgs e)
         {
-
+          //  Response.Write("< script src = wind.js></ script >");
         }
 
         protected void TextBox1_TextChanged(object sender, EventArgs e)
@@ -36,9 +36,9 @@ namespace Rental_server
             try
             {
                 //サーバー側のIPアドレス
-                   //string sConnectlonStrlng ="Addr = 192.168.10.201;"
+                   string sConnectlonStrlng ="Addr = 192.168.10.201;"
                    //PC側のIPアドレス
-                   string sConnectlonStrlng = "Addr = localhost;"
+                   //string sConnectlonStrlng = "Addr = localhost;"
                     + "User Id = sa;"
                     + "password = P@ssw0rd;"
                     + "Initial Catalog = DVDRentalDB;"
@@ -57,28 +57,7 @@ namespace Rental_server
 
                 sqlCommand.Dispose();
 
-
-                //ＩＤまたはパスワードが未入力だった場合
-                if (UserID.Text.CompareTo("") == 0 || Pass.Text.CompareTo("") == 0)
-                {
-                    //IDが未入力だったら
-                    if (UserID.Text.CompareTo("") == 0)
-                    {
-                        UserIDMi.ForeColor = Color.Red;
-                        UserIDMi.Text = "ユーザーＩＤが入力されていません";
-                    }
-                    //パスワードが未入力だったら
-                    if (Pass.Text.CompareTo("") == 0)
-                    {
-                        PasswordMi.ForeColor = Color.Red;
-                        PasswordMi.Text = "パスワードが入力されていません";
-                    }
-                    //パスワードがの中身を消す
-                    else
-                    {
-                        Pass.Text = null;
-                    }
-                }
+ 
                 //リスト作成
                 var LoginName = new List<string>();
                 var Password = new List<string>();
@@ -131,7 +110,7 @@ namespace Rental_server
                         {
                             UserIDMi.ForeColor = Color.Red;
                             UserIDMi.Text = "ユーザーＩＤまたはパスワードが違います";
-                            PasswordMi.Text = null;
+                            
                             break;
                         }
                     }
@@ -141,10 +120,7 @@ namespace Rental_server
                         UserIDMi.ForeColor = Color.Red;
                         UserIDMi.Text = "ユーザーＩＤまたはパスワードが違います";
                         //パスワードが未入力では無かったら
-                        if (Pass.Text.CompareTo("") != 0)
-                        {
-                            PasswordMi.Text = null;
-                        }
+
                     }
                 }
             }

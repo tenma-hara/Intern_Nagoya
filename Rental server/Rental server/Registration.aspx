@@ -2,14 +2,16 @@
 
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml" lang ="ja">
+<html xmlns="http://www.w3.org/1999/xhtml" oncontextmenu="return false;" lang ="ja">
 <head runat="server">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <title></title>
+    <title>会員登録</title>
 </head>
 <body>
     <form id="form1" runat="server" style="background-color: #99FF99;">
-         <header style="background-color: #00FF00; font-size: 24px;">               会員登録画面&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+         <header style="background-color: #00FF00; font-size: 24px;">               
+             <asp:Label ID="RegistTitleLabel" runat="server" Text="会員登録画面" Font-Size ="200%"></asp:Label>
+             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             </header>
         <div>
             <br />
@@ -29,7 +31,7 @@
             <asp:Label ID="StreetAdLabel" runat="server" Text="住所"></asp:Label>
             <br />
             <asp:TextBox ID="StreetAdText" runat="server"  placeholder = "(例)愛知県　名古屋市・・・" OnTextChanged="StreetAdText_TextChanged"></asp:TextBox>
-            <asp:Label ID="ErrorStrAdLabel" runat="server" ForeColor="Red"></asp:Label>
+            <asp:Label ID="ErrorStAdLabel" runat="server" ForeColor="Red"></asp:Label>
             <br />
             <br />
             <asp:Label ID="TELLabel" runat="server" Text="電話番号"></asp:Label>

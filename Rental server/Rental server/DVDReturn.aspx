@@ -5,7 +5,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" oncontextmenu="return false;" lang ="ja">
 <head runat="server">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" charset="utf-8"/>
-    <title></title>
+    <title>返却管理画面</title>
     <style type="text/css">
         h1{
 text-align: center;

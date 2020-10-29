@@ -7,7 +7,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" oncontextmenu="return false;" lang="ja">
 <head runat="server">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" charset="utf-8" />
-    <title></title>
+    <title>ログイン</title>
     <style type="text/css">
 h1{
 text-align: center;
@@ -35,8 +35,11 @@ p.example6 { font-size: x-small; }
 /*最も小さい文字サイズ*/
 p.example7 { font-size: xx-small; }
 
+
 </style>
+
 </head>
+    
 <body>
     <form id="form1" runat="server">
         <div>
@@ -45,17 +48,18 @@ p.example7 { font-size: xx-small; }
             <asp:Label ID="Label2" runat="server" Text=""></asp:Label></p>
             <p class="center" > 
                 <asp:Label ID="Label4" runat="server" Text="ログイン画面" Font-Bold="True" Font-Italic="False"  Font-Size="XX-Large" Font-Strikeout="False"  ></asp:Label></p>
-            <p class="center" > &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+            <p class="center" > &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <asp:Label ID="UserIDMi" runat="server" Text=""></asp:Label>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
                 
            </p>
         </div>
         <p  class="center">
             
-            &nbsp;&nbsp;
+            &nbsp;&nbsp; &nbsp;
             
             <asp:Label ID="Label1" runat="server" Text="ユーザーID" Font-Bold="True" Font-Italic="False" Font-Overline="True" Font-Size="X-Large" Font-Strikeout="False" Font-Underline="True" ></asp:Label>
             
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<asp:Label ID="UserIDMi" runat="server" Text=""></asp:Label>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         </p>
         <p class="center">
             <asp:TextBox ID="UserID" runat="server" placeholder = "UserID" onclick="this.select(0,this.value.length)"  OnTextChanged="TextBox1_TextChanged" Width="263px"  ></asp:TextBox>
@@ -64,8 +68,7 @@ p.example7 { font-size: xx-small; }
             &nbsp;&nbsp;
             &nbsp;<asp:Label ID="Label3" runat="server" Text="パスワード" Font-Overline="True" Font-Size="X-Large" Font-Strikeout="False" Font-Underline="True"></asp:Label>
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-            <asp:Label ID="PasswordMi" runat="server" Text=""></asp:Label>
-        </p>
+            </p>
         <p class="center">
             <asp:TextBox ID="Pass" runat="server" placeholder="password" type = "password" OnTextChanged="TextBox2_TextChanged" Width="268px"></asp:TextBox>
         </p>
@@ -88,5 +91,7 @@ p.example7 { font-size: xx-small; }
         &nbsp;</p>
     <p>
         &nbsp;</p>
+
+    <script src = "/EnterScript.js"></script>
 </body>
 </html>

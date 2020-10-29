@@ -22,6 +22,15 @@ namespace Rental_server {
         protected global::System.Web.UI.HtmlControls.HtmlForm form1;
         
         /// <summary>
+        /// RegistTitleLabel コントロール。
+        /// </summary>
+        /// <remarks>
+        /// 自動生成されたフィールド。
+        /// 変更するには、フィールドの宣言をデザイナー ファイルから分離コード ファイルに移動します。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label RegistTitleLabel;
+        
+        /// <summary>
         /// NameLabel コントロール。
         /// </summary>
         /// <remarks>
@@ -94,13 +103,13 @@ namespace Rental_server {
         protected global::System.Web.UI.WebControls.TextBox StreetAdText;
         
         /// <summary>
-        /// ErrorStrAdLabel コントロール。
+        /// ErrorStAdLabel コントロール。
         /// </summary>
         /// <remarks>
         /// 自動生成されたフィールド。
         /// 変更するには、フィールドの宣言をデザイナー ファイルから分離コード ファイルに移動します。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label ErrorStrAdLabel;
+        protected global::System.Web.UI.WebControls.Label ErrorStAdLabel;
         
         /// <summary>
         /// TELLabel コントロール。

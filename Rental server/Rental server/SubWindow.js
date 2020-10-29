@@ -1,0 +1,1 @@
+﻿window.open('Login.aspx', 'mywindow2', 'width = 1080 , height =980 , menubar = no, toolbar = no, scrollbars = no');

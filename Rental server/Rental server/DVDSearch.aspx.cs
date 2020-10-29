@@ -33,13 +33,13 @@ namespace Rental_server
             else
             {
                 //サーバ情報格納
-                string sConnectlonStrlng = "Addr = localhost;"   //192.168.10.201
+                string sConnectionString = "Addr = localhost;"   //192.168.10.201
                     + "User Id = sa;"
                     + "password = P@ssw0rd;"
                     + "Initial Catalog = DVDRentalDB;"
                     + "Integrated Security = false";
 
-                SqlConnection objConn = new SqlConnection(sConnectlonStrlng);
+                SqlConnection objConn = new SqlConnection(sConnectionString);
                 //サーバ接続
                 objConn.Open();
 
@@ -52,7 +52,7 @@ namespace Rental_server
                     DVDListBox1.Items.Add(sqlDataReader["Name"].ToString());
                 }
                 if (DVDListBox1.Items.Count != 0)
-                {
+                {//1件以上見つかれば表示
                     Result.Visible      = true;
                     DVDListBox1.Visible = true;
                 }
@@ -68,7 +68,7 @@ namespace Rental_server
         }
 
         protected void Button1_Click(object sender, EventArgs e)
-        {
+        {//戻るボタン
             Server.Transfer("Login.aspx");
         }
     }

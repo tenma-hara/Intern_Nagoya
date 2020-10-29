@@ -54,7 +54,9 @@ namespace Rental_server
         // ----- ログアウトボタンをクリックした際の処理
         protected void Button1_Click(object sender, EventArgs e)
         {//ログアウトボタン
-            Session["MemberID"] = "";   //Sessionで保持する会員IDを初期化
+            Session["MemberID"] = null;   //Sessionをnullにする
+            Session["UserID"] = null;
+            Session["nRent"] = null;
             //ログイン画面へ遷移する
             Response.Redirect("Login.aspx");
 
@@ -81,13 +83,13 @@ namespace Rental_server
             try
             {
                 //サーバ情報格納
-                string sConnectlonStrlng = "Addr = localhost;"   //192.168.10.201
+                string sConnectionString = "Addr = localhost;"   //192.168.10.201
                     + "User Id = sa;"
                     + "password = P@ssw0rd;"
                     + "Initial Catalog = DVDRentalDB;"
                     + "Integrated Security = false";
 
-                SqlConnection objConn = new SqlConnection(sConnectlonStrlng);
+                SqlConnection objConn = new SqlConnection(sConnectionString);
                 //サーバ接続
                 objConn.Open();
 
@@ -183,14 +185,14 @@ namespace Rental_server
         private void CreateRentalList()
         {   //商品一覧を作成する関数
             //サーバ情報格納
-            string sConnectlonStrlng = "Addr = localhost;"    //192.168.10.201
+            string sConnectionString = "Addr = localhost;"    //192.168.10.201
                 + "User Id = sa;"
                 + "password = P@ssw0rd;"
                 + "Initial Catalog = DVDRentalDB;"
                 + "Integrated Security = false";
             try
             {
-                SqlConnection objConn = new SqlConnection(sConnectlonStrlng);
+                SqlConnection objConn = new SqlConnection(sConnectionString);
                 //サーバ接続
                 objConn.Open();
 
@@ -326,7 +328,7 @@ namespace Rental_server
         }
 
         protected void YESButton_Click(object sender, EventArgs e)
-        {
+        {//会員登録ページへ
            Server.Transfer("Registration.aspx");
         }
 
@@ -334,6 +336,11 @@ namespace Rental_server
         protected void SearchButton_Click(object sender, EventArgs e)
         { //会員検索ページへ飛ぶ
             Server.Transfer("Member search.aspx");
+        }
+
+        protected void RegistButton_Click(object sender, EventArgs e)
+        {//会員登録ボタン　->  会員登録ページへ
+            Server.Transfer("Registration.aspx");
         }
     }
 }

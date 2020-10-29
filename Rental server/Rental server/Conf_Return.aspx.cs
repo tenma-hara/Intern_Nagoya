@@ -14,13 +14,12 @@ namespace Rental_server
     public partial class Conf_Return : System.Web.UI.Page
     {
 
-        string sConnectionString = "Addr = localhost;"
+        string sConnectionString = "Addr =localhost;"
      + "User Id = sa;"
      + "password = P@ssw0rd;"
      + "Initial Catalog = DVDRentalDB;"
      + "Integrated Security = false;";
 
-       
 
         protected void Page_Load(object sender, EventArgs e)
         {
